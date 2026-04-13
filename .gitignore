@@ -1,0 +1,32 @@
+.env
+
+saved_models
+
+# Data files
+# *.csv
+*.json
+*.pkl
+*.h5
+*.pt
+*.ckpt
+*.log
+*.tar.gz
+*.zip
+*.tar
+
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.pyc
+.DS_Store
+venv/
+dist/
+build/
+*.egg-info/
+
+# IDEs and editors
+.idea
+.ipynb_checkpoints/
+.mypy_cache/
+.pytest_cache/
+.ropeproject/
+.vscode

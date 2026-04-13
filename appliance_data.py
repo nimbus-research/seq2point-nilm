@@ -1,5 +1,5 @@
-""" A collection of all appliances available. Each appliance has a consumption mean 
-and standard deviation, as well as a list of houses containing the appliance. """
+"""A collection of all appliances available. Each appliance has a consumption mean
+and standard deviation, as well as a list of houses containing the appliance."""
 
 appliance_data = {
     "kettle": {
@@ -16,7 +16,7 @@ appliance_data = {
         "houses": [2, 5, 9, 12, 15],
         "channels": [1, 1, 1, 1, 1],
         "test_house": 15,
-        "validation_house": 12
+        "validation_house": 12,
     },
     "dishwasher": {
         "mean": 700,
@@ -24,7 +24,7 @@ appliance_data = {
         "houses": [5, 7, 9, 13, 16, 18, 20],
         "channels": [4, 6, 4, 4, 6, 6, 5],
         "test_house": 9,
-        "validation_house": 18,     
+        "validation_house": 18,
     },
     "washingmachine": {
         "mean": 400,
@@ -46,7 +46,4 @@ appliance_data = {
 
 # The std and mean values for normalising the mains data which are used
 # as input to the networks
-mains_data = {
-    "mean": 522,
-    "std":  814        
-    }
+mains_data = {"mean": 522, "std": 814}

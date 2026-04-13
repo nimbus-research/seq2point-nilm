@@ -1,7 +1,36 @@
-# seq2point-nilm
+# Working fork of "seq2point-nilm"
+
+This repository is a fork of *seq2point-nilm*: <https://github.com/MingjunZhong/seq2point-nilm>
+
+This repository contains updated and reformatted code to address bugs.
+
+This code requires that the UK-DALE dataset is already present in our `nilm` repo in the `data` directory.
+
+Code to reproduce:
+
+```bash
+conda activate msemicon
+# Prepare UK-DALE (2015) training and validation data
+python dataset_management/ukdale/create_trainset_ukdale.py
+# Prepare UK-DALE (2015) test data
+python dataset_management/ukdale/create_test_set.py
+# Train model
+python train_main.py
+# Test model
+python test_main.py
+```
+
+## ORIGINAL README BELOW
+
+The rest of the README file contains the original contents with spelling errors fixed.
+
+**Warning**: the README contains errors...
+
+## seq2point-nilm
+
 **Sequence-to-point (seq2point) learning for non-intrusive load monitoring (NILM)**
 
-Seq2point learning is a generic and as well as simple framework for NILM [1-2]. It learns a mapping from the mains window Y to the midpoint x of the curresponding appliance. From probabilistic perspective, seq2point learns a condistional distribution p(x|Y) (see details in [2]).
+Seq2point learning is a generic and as well as simple framework for NILM [1-2]. It learns a mapping from the mains window Y to the midpoint x of the corresponding appliance. From probabilistic perspective, seq2point learns a conditional distribution p(x|Y) (see details in [2]).
 
 Similarly, the seq2seq learning proposed in [2] learns a mapping from sequence to sequence which could be seen as an extension of seq2point.
 
@@ -9,10 +38,9 @@ Note that seq2point learning is a framework and so you can choose any architectu
 
 This code is written by Mingjun Zhong adapted from Michele D'Incecco and Jack Barber:
 
-https://github.com/MingjunZhong/transferNILM.
+<https://github.com/MingjunZhong/transferNILM>.
 
-https://github.com/JackBarber98/pruned-nilm.
- 
+<https://github.com/JackBarber98/pruned-nilm>.
 
 References:
 
@@ -21,12 +49,11 @@ References:
 [2] Chaoyun Zhang, Mingjun Zhong, Zongzuo Wang, Nigel Goddard, and Charles Sutton. "Sequence-to-point learning with neural networks for nonintrusive load monitoring."
 Thirty-Second AAAI Conference on Artificial Intelligence (AAAI-18), Feb. 2-7, 2018.
 
-Seq2point model: the input is the mains windows (599 timepoints); and output is the midpoint of the corresponding appliance windows. Note that you can choose other sizes of the inpurt window, for example, 299, 399, etc.
+Seq2point model: the input is the mains windows (599 timepoints); and output is the midpoint of the corresponding appliance windows. Note that you can choose other sizes of the inprt window, for example, 299, 399, etc.
 
-![](images/s2p.png)
+![S2P](images/s2p.png)
 
-
-**Requirements**
+## Requirements
 
 0. This software was tested on Ubuntu 16.04 LTS
 
@@ -34,26 +61,22 @@ Seq2point model: the input is the mains windows (599 timepoints); and output is 
 
 2. Install Tensorflow = 2.0.0
 
-    * Follow official instruction on https://www.tensorflow.org/install/
-    
+    * Follow official instruction on <https://www.tensorflow.org/install/>
+
     * Remember a GPU support is highly recommended for training
-    
+
 3. Install Keras > 2.1.5 (Tested on Keras 2.3.1)
 
-    * Follow official instruction on https://keras.io/
-    
+    * Follow official instruction on <https://keras.io/>
+
 4. Clone this repository
-    
 
-For instance, the environments we used are listed in the file `environment.yml` - 
-you could find all the packages there. If you use `conda`, 
-you may type `conda env create -f environment.yml` to set up the environment.
-    
+For instance, the environments we used are listed in the file `environment.yml` - you could find all the packages there. If you use `conda`, you may type `conda env create -f environment.yml` to set up the environment.
 
-# How to use the code and examples
-With this project you will be able to use the Sequence to Point network. You can prepare the dataset from the
-most common in NILM, train the network and test it. Target appliances taken into account are kettle, microwave, fridge, dish washer and
-washing machine.
+### How to use the code and examples
+
+With this project you will be able to use the Sequence to Point network. You can prepare the dataset from the most common in NILM, train the network and test it. Target appliances taken into account are kettle, microwave, fridge, dish washer and washing machine.
+
 Directory tree:
 
 ``` bash
@@ -88,10 +111,8 @@ seq2point-nilm/
 │   ├── model.png
 │   ├── s2p.png
 │   └── washingmachine.png
-├── model.png
 ├── model_structure.py
 ├── README.md
-├── remove_space.py
 ├── saved_models/
 ├── seq2point_test.py
 ├── seq2point_train.py
@@ -99,15 +120,13 @@ seq2point-nilm/
 └── train_main.py
 ```
 
-## **Create REFIT, UK-DALE or REDD dataset**
+### **Create REFIT, UK-DALE or REDD dataset**
 
-This script allows the user to create CSV files of training dataset of power measurments.
-The output will be 3 CSV files for training, validation and test. 
+This script allows the user to create CSV files of training dataset of power measurements. The output will be 3 CSV files for training, validation and test.
 
-You should select the following arguments for the argument parser:
-`python create_dataset -h`
+You should select the following arguments for the argument parser: `python create_dataset -h`
 
-```
+```bash
 --data_dir DATA_DIR             The directory containing the CLEAN REFIT data
 
 --appliance_name APPLIANCE_NAME which appliance you want to train: kettle,
@@ -120,16 +139,15 @@ You should select the following arguments for the argument parser:
 `--save_path SAVE_PATH           The directory to store the training data
 ```
 
-
 Example:
 
-Create a REFIT dataset (mains and appliance power measurments) for kettle:
+Create a REFIT dataset (mains and appliance power measurements) for kettle:
 
 `python create_dataset.py --data_dir './' --appliance_name 'kettle' --aggregate_mean 522 --aggregate_std 814 --save_path './'`
-    
+
 ### **REFIT**
 
-Download the REFIT raw data from the original website (https://pureportal.strath.ac.uk/en/datasets/refit-electrical-load-measurements-cleaned). 
+Download the REFIT raw data from the original website (<https://pureportal.strath.ac.uk/en/datasets/refit-electrical-load-measurements-cleaned>).
 Appliances and training set composition for this project:
 
 | Appliances      |      training                    |  validation | test   |
@@ -140,11 +158,10 @@ Appliances and training set composition for this project:
 | dish washer     | 5, 7, 9, 13, 16                  |     18      |   20   |
 | washing machine | 2, 5, 7, 9, 15, 16, 17           |      18     |   8    |
 
-
 ### **UK-DALE**
 
-Download the UK-DALE raw data from the original website (http://jack-kelly.com/data/). 
-Validation is a 13% slice from the final training building. 
+Download the UK-DALE raw data from the original website (<http://jack-kelly.com/data/>).
+Validation is a 13% slice from the final training building.
 Appliances and training set composition for this project:
 
 | Appliances      |      training   |  validation | test   |
@@ -155,11 +172,10 @@ Appliances and training set composition for this project:
 | dishwasher      | 1               |     1       |   2    |
 | washingmachine  | 1               |     1       |   2    |
 
-
 ### **REDD**
 
-Download the REDD raw data from the original website (http://redd.csail.mit.edu/).
-Validation is a 10% slice from the final training building. 
+Download the REDD raw data from the original website (<http://redd.csail.mit.edu/>).
+Validation is a 10% slice from the final training building.
 Appliances and training set composition for this project:
 
 | Appliances      |      training   |  validation | test   |
@@ -169,9 +185,8 @@ Appliances and training set composition for this project:
 | dishwasher      | 2,3             |     3       |   1    |
 | washingmachine  | 2,3             |     3       |   1    |
 
-
 **I will write instructions how to use the code with more details. Currently, you just run train_main.py and test_main.py. Do remember to choose your parameters in these two files correspondingly.**
 
-To train the modoel, just run `python train_main.py` or in IDE environment, e.g., Spyder, run train_main.py
+To train the model, just run `python train_main.py` or in IDE environment, e.g., Spyder, run train_main.py
 
-Any questions, please write email to me: mingjun.zhong@abdn.ac.uk
+Any questions, please write email to me: <mingjun.zhong@abdn.ac.uk>
