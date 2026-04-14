@@ -166,7 +166,7 @@ class TestSlidingWindowGenerator(object):
     _offset (int): The offset of the inferred value from the sliding window.
     _inputs (numpy.ndarray): The available testing / validation features.
     _targets (numpy.ndarray): The target values corresponding to _inputs.
-    _total_size (int): The total number of inputs.
+    total_size (int): The total number of inputs.
     """
 
     def __init__(self, number_of_windows, inputs, targets, offset):

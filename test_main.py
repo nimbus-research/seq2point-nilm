@@ -15,7 +15,7 @@ from train_main import (
 
 
 # Default values for terminal arguments
-DEFAULT_TEST_DIR = f"{DATASET_DIR}{DEFAULT_APPLIANCE}_test_.csv"
+DEFAULT_TEST_FILE = f"{DATASET_DIR}{DEFAULT_APPLIANCE}_test_.csv"
 
 
 if __name__ == "__main__":
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--test_directory",
         type=str,
-        default=DEFAULT_TEST_DIR,
+        default=DEFAULT_TEST_FILE,
         help="Directory for test data.",
     )
 

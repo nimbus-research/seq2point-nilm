@@ -18,10 +18,10 @@ DEFAULT_CROP = 100000
 DEFAULT_ALGORITHM = "seq2point"
 DEFAULT_NETWORK_TYPE = "default"
 DEFAULT_EPOCHS = 10
-DEFAULT_INPUT_WINDOW_LENGTH = 599
+DEFAULT_INPUT_WINDOW_LENGTH = 599  # 49, 59
 DEFAULT_VALIDATION_FREQUENCY = 1
-DEFAULT_TRAIN_DIR = f"{DATASET_DIR}{DEFAULT_APPLIANCE}_training_.csv"
-DEFAULT_VAL_DIR = f"{DATASET_DIR}{DEFAULT_APPLIANCE}_validation_.csv"
+DEFAULT_TRAIN_FILE = f"{DATASET_DIR}{DEFAULT_APPLIANCE}_training_.csv"
+DEFAULT_VAL_FILE = f"{DATASET_DIR}{DEFAULT_APPLIANCE}_validation_.csv"
 
 
 def remove_space(string):
@@ -85,16 +85,16 @@ if __name__ == "__main__":
         help=f"How often to validate model. Default is {DEFAULT_VALIDATION_FREQUENCY}.",
     )
     parser.add_argument(
-        "--training_directory",
+        "--training_directory",  # ACTUALLY A FILE PATH...
         type=str,
-        default=DEFAULT_TRAIN_DIR,
-        help="The dir for training data.",
+        default=DEFAULT_TRAIN_FILE,
+        help="Path to training data.",
     )
     parser.add_argument(
-        "--validation_directory",
+        "--validation_directory",  # ACTUALLY A FILE PATH...
         type=str,
-        default=DEFAULT_VAL_DIR,
-        help="The dir for validation data.",
+        default=DEFAULT_VAL_FILE,
+        help="Path to validation data.",
     )
 
     arguments = parser.parse_args()

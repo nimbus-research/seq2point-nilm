@@ -30,19 +30,19 @@ class Trainer:
 
     def __init__(
         self,
-        appliance,
-        batch_size,
-        crop,
-        network_type,
-        training_directory,
-        validation_directory,
-        save_model_dir,
-        epochs=10,
-        input_window_length=599,
-        validation_frequency=1,
-        patience=3,
-        min_delta=1e-6,
-        verbose=1,
+        appliance: str,
+        batch_size: int,
+        crop: int,
+        network_type: str,
+        training_directory: str,
+        validation_directory: str,
+        save_model_dir: str,
+        epochs: int = 10,
+        input_window_length: int = 599,
+        validation_frequency: int = 1,
+        patience: int = 3,
+        min_delta: float = 1e-6,
+        verbose: int = 1,
     ):
         self._appliance = appliance
         self._algorithm = network_type
@@ -53,26 +53,25 @@ class Trainer:
         self._patience = patience
         self._min_delta = min_delta
         self._verbose = verbose
+        self._save_model_dir = save_model_dir
+        self._input_window_length = input_window_length
+        self._validation_frequency = validation_frequency
+        self._training_directory = training_directory
+        self._validation_directory = validation_directory
+
         self._loss = "mse"
         self._metrics = ["mse", "msle", "mae"]
         self._learning_rate = 0.001
         self._beta_1 = 0.9
         self._beta_2 = 0.999
-        self._save_model_dir = save_model_dir
 
-        self._input_window_length = input_window_length
         self._window_size = 2 + self._input_window_length
         self._window_offset = int((0.5 * self._window_size) - 1)
         self._max_chunk_size = 5 * 10**2
-        self._validation_frequency = validation_frequency
         self._ram_threshold = 5 * 10**5
         self._skip_rows_train = 10000000
         self._validation_steps = 100
         self._skip_rows_val = 0
-
-        # Directories of the training and validation files.
-        self._training_directory = training_directory
-        self._validation_directory = validation_directory
 
         kwargs = {
             "chunk_size": self._max_chunk_size,
@@ -83,14 +82,10 @@ class Trainer:
             "ram_threshold": self._ram_threshold,
         }
         self._training_chunker = TrainSlidingWindowGenerator(
-            file_name=self._training_directory,
-            skip_rows=self._skip_rows_train,
-            **kwargs
+            file_name=self._training_directory, skip_rows=self._skip_rows_train, **kwargs
         )
         self._validation_chunker = TrainSlidingWindowGenerator(
-            file_name=self._validation_directory,
-            skip_rows=self._skip_rows_val,
-            **kwargs
+            file_name=self._validation_directory,skip_rows=self._skip_rows_val, **kwargs
         )
 
     def train_model(self):
@@ -122,7 +117,6 @@ class Trainer:
             verbose=self._verbose,  # type: ignore
             mode="auto",
         )
-
         # can use checkpoint ###############################################
         # checkpoint_filepath = "checkpoint/housedata/refit/"+ self._appliance + "/"
         # model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
@@ -130,7 +124,6 @@ class Trainer:
         #     save_weights_only=False, mode='auto', save_freq='epoch')
         # callbacks=[early_stopping, model_checkpoint_callback]
         ###################################################################
-
         callbacks = [early_stopping]
         training_history = self.default_train(
             model, callbacks, steps_per_training_epoch
@@ -139,39 +132,32 @@ class Trainer:
             training_history.history["val_loss"], self._validation_frequency
         )
         model.summary()
-        save_model(
-            model,
-            self._network_type,
-            self._algorithm,
-            self._appliance,
-            self._save_model_dir,
-        )
+        save_model(model, self._save_model_dir)
         self.plot_training_results(training_history)
 
-    def default_train(self, model, callbacks, steps_per_training_epoch):
+    def default_train(
+        self, model: tf.keras.Model, callbacks: list, steps_per_training_epoch: int
+    ) -> np.ndarray:
         """The default training method the neural network will use. No pruning occurs.
 
-        Parameters:
-        model (tensorflow.keras.Model): The seq2point model being trained.
-        early_stopping (tensorflow.keras.callbacks.EarlyStopping): An early stopping callback.
-        steps_per_training_epoch (int): The number of training steps to occur per epoch.
-
-        Returns:
-        training_history (numpy.ndarray): Error metrics and loss values at the end of each epoch.
+        :param tf.keras.Model model: The untrained model to be trained.
+        :param list callbacks: The callbacks to be applied during training.
+        :param int steps_per_training_epoch: The number of steps per training epoch.
+        :return np.ndarray training_history: The history of the training loss and metrics.
         """
         training_history = model.fit(
-            self._training_chunker.load_dataset(),
+            self._training_chunker.load_dataset(),  # type: ignore
             steps_per_epoch=steps_per_training_epoch,
             epochs=self._epochs,
-            verbose=self._verbose,
+            verbose=self._verbose,  # type: ignore
             callbacks=callbacks,
-            validation_data=self._validation_chunker.load_dataset(),
+            validation_data=self._validation_chunker.load_dataset(),  # type: ignore
             validation_freq=self._validation_frequency,
             validation_steps=self._validation_steps,
         )
         return training_history
 
-    def plot_training_results(self, training_history):
+    def plot_training_results(self, training_history: np.ndarray) -> None:
         """Plots and saves a graph of training loss against epoch.
 
         Parameters:
